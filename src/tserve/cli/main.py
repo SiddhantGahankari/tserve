@@ -121,11 +121,6 @@ def main(argv: list[str] | None = None) -> int:
     ------
     SystemExit
         From ``ArgumentParser.error`` or argparse usage errors.
-    ValueError
-        If positional tokens are malformed (empty ``id=spec``,
-        a bare craft spec), or ``Server`` / ``bootstrap`` reject a
-        load spec (duplicate id, unknown registry id, non-zip path,
-        unknown executor).
     TypeError
         If a model object is not a sktime ``BaseForecaster``.
     ImportError
@@ -150,13 +145,16 @@ def main(argv: list[str] | None = None) -> int:
 
     from tserve.server import Server
 
-    server = Server(
-        model=parse_model(args.positional_model),
-        models_dir=args.models_dir,
-        host=args.host,
-        port=args.port,
-        log_level=args.log_level,
-    )
+    try:
+        server = Server(
+            model=parse_model(args.positional_model),
+            models_dir=args.models_dir,
+            host=args.host,
+            port=args.port,
+            log_level=args.log_level,
+        )
+    except ValueError as exc:
+        parser.error(str(exc))
     try:
         server.run()
     except KeyboardInterrupt:
