@@ -154,7 +154,6 @@ def bootstrap(model: list[str | Path | tuple[str, Any]]) -> Runtime:
         )
 
     for position, (info, item) in enumerate(resolved, start=1):
-
         label = f"{info.id} via {info.executor}"
         dots = paint("." * max(3, 40 - len(label)), "2")
         prefix = (
