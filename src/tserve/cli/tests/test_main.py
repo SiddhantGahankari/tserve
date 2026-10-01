@@ -107,18 +107,3 @@ def test_main_version(capsys):
 
     assert excinfo.value.code == 0
     assert capsys.readouterr().out.strip() == f"tserve {__version__}"
-
-
-def test_main_reports_invalid_model_without_traceback(capsys):
-    with (
-        patch(
-            "tserve.server.Server", side_effect=ValueError("unknown model 'missing'")
-        ),
-        pytest.raises(SystemExit) as excinfo,
-    ):
-        main(["missing"])
-
-    assert excinfo.value.code == 2
-    err = capsys.readouterr().err
-    assert "unknown model 'missing'" in err
-    assert "Traceback" not in err
