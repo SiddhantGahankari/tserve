@@ -16,8 +16,6 @@ Python >= 3.12. Install TServe from PyPI with [uv](https://docs.astral.sh/uv/) o
     pip install "tserve[server,hub]"
     ```
 
-    The `gpu` extra does not change a pip install. Family extras already install CUDA torch from PyPI (MPS on macOS). To force a CPU wheel, install torch separately first — [CPU-only install](#cpu-only-install).
-
 `server` is enough to serve `naive` (a test baseline). The `hub` extra above covers Chronos Bolt/T5, TTM, and TimesFM 2.x. Do not add `client` on a machine that only serves.
 
 ## Dependencies
@@ -26,25 +24,13 @@ Python >= 3.12. Install TServe from PyPI with [uv](https://docs.astral.sh/uv/) o
 
 Replace `hub` in the install above with another extra from the table. `full` is the union extra. `all-extras` is a pip convenience for `client,server,full` and is not a Docker tag. Each extra's command and models: [catalog](../models/index.md#start-a-server).
 
-`gpu` is not a model family. A CPU wheel: [CPU-only install](#cpu-only-install).
+A CPU build of torch: [CPU-only install](#cpu-only-install).
 
 ## CPU-only install
 
-Family extras pull `torch`, and every install here takes the CUDA wheel from PyPI (MPS on macOS). On a GPU host that is already what you want, so nothing below is needed.
+Family extras pull `torch`. Pick the CPU build for your OS on the [PyTorch install page](https://pytorch.org/get-started/locally/), install it, then install TServe as above. If a later install replaces that build, run the PyTorch command again.
 
-Without a GPU, that wheel is a large download you will never use. Install torch from the CPU index first, then TServe. If a later install replaces that wheel with CUDA, run the torch line again.
-
-```bash
-pip install torch --index-url https://download.pytorch.org/whl/cpu
-```
-
-```bash
-pip install "tserve[server,hub]"
-```
-
-The same order works with `uv pip install`. Swap `hub` for any other family extra from [Dependencies](#dependencies).
-
-The `gpu` extra only selects the torch index in a clone's uv lockfile: [From source](source.md#gpu). Containers pick the wheel through the tag instead: [Docker](docker.md#gpu-images).
+Swap `hub` for any other family extra from [Dependencies](#dependencies). A GPU host can also use a `*-gpu` image: [GPU images](docker.md#gpu-images).
 
 --8<-- "includes/serve.md"
 
