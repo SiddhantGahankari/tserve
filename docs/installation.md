@@ -26,7 +26,7 @@ Other model families use different image tags. Choose the model first, then use 
 
 ## UV / Pip
 
-TServe requires Python 3.12 or newer. Install the `server` extra and the extra for the model family you need. The examples below install the `hub` family. A plain install pulls the CUDA build of torch (MPS on macOS); the CPU tabs skip that download on a machine without a GPU.
+TServe requires Python 3.12 or newer. Install the `server` extra and the extra for the model family you need. The examples below install the `hub` family. A CPU build of torch: [CPU-only install](server/pip.md#cpu-only-install).
 
 === "uv"
 
@@ -36,23 +36,9 @@ TServe requires Python 3.12 or newer. Install the `server` extra and the extra f
     uv venv
     ```
 
-    Then install TServe:
-
-    === "GPU (default)"
-
-        ```bash
-        uv pip install "tserve[server,hub]"
-        ```
-
-    === "CPU only"
-
-        ```bash
-        uv pip install torch --index-url https://download.pytorch.org/whl/cpu
-        ```
-
-        ```bash
-        uv pip install "tserve[server,hub]"
-        ```
+    ```bash
+    uv pip install "tserve[server,hub]"
+    ```
 
 === "pip"
 
@@ -72,29 +58,15 @@ TServe requires Python 3.12 or newer. Install the `server` extra and the extra f
         .venv\Scripts\Activate.ps1
         ```
 
-    Then install TServe:
+    ```bash
+    python -m pip install "tserve[server,hub]"
+    ```
 
-    === "GPU (default)"
-
-        ```bash
-        python -m pip install "tserve[server,hub]"
-        ```
-
-    === "CPU only"
-
-        ```bash
-        python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
-        ```
-
-        ```bash
-        python -m pip install "tserve[server,hub]"
-        ```
-
-The `server` extra alone supports the `naive` test baseline. Replace `hub` with another [family extra](models/index.md#dependencies), or use `full` for every family. The same CPU-first order is documented as [CPU-only install](server/pip.md#cpu-only-install).
+The `server` extra alone supports the `naive` test baseline. Replace `hub` with another [family extra](models/index.md#dependencies), or use `full` for every family.
 
 ## From source
 
-Use a source install when developing TServe or testing unreleased changes. It is also the only path where the `gpu` extra selects the torch index, because that choice lives in the repository's uv lockfile. The [From source](server/source.md) guide covers cloning the repository, editable installs, dependency extras, and GPU setup.
+Use a source install when developing TServe or testing unreleased changes. The [From source](server/source.md) guide covers cloning the repository, editable installs, and dependency extras.
 
 ## Next
 
